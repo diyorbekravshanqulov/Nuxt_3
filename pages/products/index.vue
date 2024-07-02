@@ -1,10 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container mt-20">
+    <input
+      v-model="search"
+      placeholder="Search products..."
+      class="w-full my-5 py-3 px-5 border border-gray-800 rounded outline-none focus:border-primary" type="text"
+    />
 
-  
-    <div class="grid md:grid-cols-5 grid-cols-2 gap-[20px] justify-center">
-      <router-link :to="`/products/${item.id}`"
-        v-for="(item, i) in products"
+    <div class="grid md:grid-cols-5 grid-cols-2 gap-[20px]">
+      <router-link
+        :to="`/products/${item.id}`"
+        v-for="(item, i) in Products"
         :key="i"
         class="mb-[30px] bg-k_oq shadow-xl pb-5 relative"
       >
@@ -36,7 +41,17 @@
 
 <script setup>
 
+const search = ref("");
 const products = ref([]);
+
+const Products = computed(() => {
+  if (!search.value) {
+    return products.value;
+  }
+  return products.value.filter((item) =>
+    item.title.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 onMounted(async () => {
   try {
@@ -49,3 +64,4 @@ onMounted(async () => {
 });
 
 </script>
+
